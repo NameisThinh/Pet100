@@ -36,12 +36,13 @@ local function getServer()
     end
     local shuffledServers = shuffleArray(servers)
 
+ 
         local server = shuffledServers[currentIndex]
         if server then
             return server
         else
             currentIndex = (currentIndex % #shuffledServers) + 1
-   
+   getServer()
 end
 
 pcall(function()
