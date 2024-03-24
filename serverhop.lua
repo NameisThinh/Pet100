@@ -11,6 +11,35 @@ end
 
  
 local function getServer()
+    local servers = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26}
+    local currentIndex = 1
+
+    local function shuffleArray(array)
+        local currentIndex = #array
+
+        while currentIndex > 1 do
+            local randomIndex = math.random(1, currentIndex)
+            array[currentIndex], array[randomIndex] = array[randomIndex], array[currentIndex]
+            currentIndex = currentIndex - 1
+        end
+
+        return array
+    end
+
+    while true do
+        local server = servers[currentIndex]
+        if server then
+            return server
+        else
+            currentIndex = (currentIndex % #servers) + 1
+
+            -- Kiểm tra nếu đã duyệt qua tất cả các phần tử trong mảng
+            if currentIndex == 1 then
+                servers = shuffleArray(servers) -- Trộn lại mảng servers
+            end
+        end
+    end
+end
 
     local function shuffleArray(array)
         local currentIndex = #array
