@@ -41,10 +41,10 @@ local function getServer()
             return server
         else
             currentIndex = (currentIndex % #shuffledServers) + 1
+            getServer()
         end
-        getServer()
+
     end
-    
 end
 
 pcall(function()
