@@ -41,47 +41,8 @@ local function getServer()
     end
 end
 
-    local function shuffleArray(array)
-        local currentIndex = #array
-      
-        while currentIndex > 1 do
-          local randomIndex = math.random(1, currentIndex)
-          array[currentIndex], array[randomIndex] = array[randomIndex], array[currentIndex]
-          currentIndex = currentIndex - 1
-        end
-      
-        return array
-      end
-        -- local servers
+   
     
-        local success, decodedData = pcall(function()
-            return game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=30')).data
-        end)
-    
-        if not success then
-            print("Error getting servers, using backup method")
-            decodedData = game.HttpService:JSONDecode(alternateServersRequest()).data
-        end
-    
-
-        -- local server = servers[Random.new():NextInteger(1, 20)]
-    -- if server then
-    --     return server
-    -- else
-    --     return getServer()
-    -- end
-        local servers = {2,3,4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26}
-        local currentIndex = 1
-    
-        while true do
-            local server = servers[currentIndex]
-            if server then
-                return server
-            else
-                currentIndex = (currentIndex % #servers) + 1
-            end
-        end
-    end
 
 pcall(function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, game.Players.LocalPlayer)
