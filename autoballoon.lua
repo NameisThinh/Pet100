@@ -162,3 +162,39 @@ while getgenv().autoBalloon do
     LocalPlayer.Character.HumanoidRootPart.Anchored = false
     LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
+
+-- Function to find a server with fewer players
+local function findServerWithFewerPlayers()
+    local teleportService = game:GetService("TeleportService")
+    local servers = teleportService:GetRecentlyVisited(UniverseId)
+
+    local minPlayers = math.huge
+    local chosenServer
+
+    for _, server in ipairs(servers) do
+        if server.Players < minPlayers then
+            minPlayers = server.Players
+            chosenServer = server
+        end
+    end
+
+    return chosenServer
+end
+
+-- After performing server hop
+local function afterServerHop()
+    -- Find a server with fewer players
+    local newServer = findServerWithFewerPlayers()
+
+    -- Teleport to the chosen server
+    if newServer then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(UniverseId, newServer.Id)
+    else
+        print("Could not find a server with fewer players.")
+    end
+end
+
+-- Perform server hop
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
+afterServerHop()
+
