@@ -30,7 +30,7 @@ local function getServer()
     -- else
     --     return getServer()
     -- end
-        local server = servers[Random.new():NextInteger(1, 50)]
+        local server = servers[Random.new():NextInteger(10, 50)]
     
         if server then
             return server
