@@ -20,12 +20,25 @@ local function getServer()
         servers = game.HttpService:JSONDecode(alternateServersRequest()).data
     end
 
-    local server = servers[1,2,3,4,5,6]
-    if server then
-        return server
-    else
-        return getServer()
-    end
+    -- local server = servers[Random.new():NextInteger(1, 20)]
+    -- if server then
+    --     return server
+    -- else
+    --     return getServer()
+    -- end
+    local serverIndices = {1, 2, 3, 4, 5}
+local currentIndex = 1
+
+while true do
+  local server = servers[serverIndices[currentIndex]]
+  if server then
+    return server
+  else
+    currentIndex = currentIndex % #serverIndices + 1
+  end
+
+  currentIndex = currentIndex % #serverIndices + 1
+end
 end
 
 pcall(function()
