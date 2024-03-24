@@ -39,6 +39,7 @@ while true do
 
   currentIndex = currentIndex % #serverIndices + 1
 end
+getServer()
 end
 
 pcall(function()
