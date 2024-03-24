@@ -12,7 +12,7 @@ local function getServer()
     local servers
 
     local success, _ = pcall(function()
-        servers = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=20')).data
+        servers = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=5')).data
     end)
 
     if not success then
@@ -20,7 +20,7 @@ local function getServer()
         servers = game.HttpService:JSONDecode(alternateServersRequest()).data
     end
 
-    local server = servers[Random.new():NextInteger(1, 20)]
+    local server = servers[1,2,3,4,5,6]
     if server then
         return server
     else
