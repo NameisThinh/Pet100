@@ -21,32 +21,26 @@ local function getServer()
         decodedData = game.HttpService:JSONDecode(alternateServersRequest()).data
     end
 
-    local servers = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26}
+    local servers = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42}
     local currentIndex = 1
 
     local function shuffleArray(array)
         local currentIndex = #array
-
-        while currentIndex > 1 do
-            local randomIndex = math.random(1, currentIndex)
-            array[currentIndex], array[randomIndex] = array[randomIndex], array[currentIndex]
-            currentIndex = currentIndex - 1
+    
+        for i = currentIndex, 2, -1 do
+            local randomIndex = math.random(1, i)
+            array[i], array[randomIndex] = array[randomIndex], array[i]
         end
-
+    
         return array
     end
-
+    local shuffledServers = shuffleArray(servers)
     while true do
-        local server = servers[currentIndex]
+        local server = shuffledServers[currentIndex]
         if server then
             return server
         else
-            currentIndex = (currentIndex % #servers) + 1
-
-            -- Kiểm tra nếu đã duyệt qua tất cả các phần tử trong mảng
-            if currentIndex == 1 then
-                servers = shuffleArray(servers) -- Trộn lại mảng servers
-            end
+            currentIndex = (currentIndex % #shuffledServers) + 1
         end
     end
 end
