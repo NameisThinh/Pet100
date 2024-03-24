@@ -10,7 +10,7 @@ end
 
  
 local function getServer()
-        local servers
+        -- local servers
     
         local success, decodedData = pcall(function()
             return game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=20')).data
@@ -28,15 +28,15 @@ local function getServer()
     -- else
     --     return getServer()
     -- end
-        local serverIndices = {2,3,4, 5, 6, 7, 8, 9, 10  }
+        local servers = {2,3,4, 5, 6, 7, 8, 9, 10  }
         local currentIndex = 1
     
         while true do
-            local server = decodedData[serverIndices[currentIndex]]
+            local server = servers[currentIndex]
             if server then
                 return server
             else
-                currentIndex = (currentIndex % #serverIndices) + 1
+                currentIndex = (currentIndex % #servers) + 1
             end
         end
     end
