@@ -10,7 +10,6 @@ getgenv().autoBalloonConfig = {
     GET_BALLOON_DELAY = 0, -- delay before getting balloons again if none are detected
     WAIT_FOR_BREAK = 1.5 -- delay in seconds to wait for the gift to break
 }
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
 
@@ -86,6 +85,8 @@ spawn(function()
 end)
 
 while getgenv().autoBalloon do
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+
     local balloonIds = {}
 
     local getActiveBalloons = ReplicatedStorage.Network.BalloonGifts_GetActiveBalloons:InvokeServer()
