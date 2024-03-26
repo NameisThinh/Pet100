@@ -50,40 +50,40 @@ local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Ensure 'Highlight' exists before attempting to destroy it
-local highlight = Workspace.__THINGS.Breakables:FindFirstChild("Highlight")
-if highlight then
-    highlight:Destroy()
-end
+-- local highlight = Workspace.__THINGS.Breakables:FindFirstChild("Highlight")
+-- if highlight then
+--     highlight:Destroy()
+-- end
 
-local function IsWithinDistance(object, maxDistance)
-    local localPlayer = Players.LocalPlayer
-    if localPlayer and localPlayer.Character then
-        local playerPosition = localPlayer.Character.HumanoidRootPart.Position
-        local objectPosition = object.WorldPivot.Position
-        local distance = (playerPosition - objectPosition).magnitude
-        return distance <= maxDistance
-    end
-    return false
-end
+-- local function IsWithinDistance(object, maxDistance)
+--     local localPlayer = Players.LocalPlayer
+--     if localPlayer and localPlayer.Character then
+--         local playerPosition = localPlayer.Character.HumanoidRootPart.Position
+--         local objectPosition = object.WorldPivot.Position
+--         local distance = (playerPosition - objectPosition).magnitude
+--         return distance <= maxDistance
+--     end
+--     return false
+-- end
 
-MaxDistance = 5
-spawn(function()
-    while true do
-        local breakables = Workspace.__THINGS.Breakables:GetChildren()
-        for _, breakable in pairs(breakables) do
-            if IsWithinDistance(breakable, MaxDistance) then
-                local Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
-                while Model and IsWithinDistance(Model, MaxDistance) do
-                    local args = { breakable.Name } -- Assuming the name of the model is the argument
-                    ReplicatedStorage:WaitForChild("Network"):WaitForChild("Breakables_PlayerDealDamage"):FireServer(unpack(args))
-                    Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
-                    wait()
-                end
-            end
-        end
-        wait()
-    end
-end)
+-- MaxDistance = 5
+-- spawn(function()
+--     while true do
+--         local breakables = Workspace.__THINGS.Breakables:GetChildren()
+--         for _, breakable in pairs(breakables) do
+--             if IsWithinDistance(breakable, MaxDistance) then
+--                 local Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
+--                 while Model and IsWithinDistance(Model, MaxDistance) do
+--                     local args = { breakable.Name } -- Assuming the name of the model is the argument
+--                     ReplicatedStorage:WaitForChild("Network"):WaitForChild("Breakables_PlayerDealDamage"):FireServer(unpack(args))
+--                     Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
+--                     wait()
+--                 end
+--             end
+--         end
+--         wait()
+--     end
+-- end)
 
 while getgenv().autoBalloon do
     local balloonIds = {}
