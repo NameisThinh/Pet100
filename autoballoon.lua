@@ -8,7 +8,7 @@ getgenv().autoBalloonConfig = {
     SERVER_HOP_DELAY = 0, -- delay before server hopping
     BALLOON_DELAY = 1, -- delay before popping next balloon (if there are multiple balloons in the server)
     GET_BALLOON_DELAY = 0, -- delay before getting balloons again if none are detected
-    WAIT_FOR_BREAK = 1 -- delay in seconds to wait for the gift to break
+    WAIT_FOR_BREAK = 0.5 -- delay in seconds to wait for the gift to break
 }
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
