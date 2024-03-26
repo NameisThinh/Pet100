@@ -10,34 +10,34 @@ getgenv().autoBalloonConfig = {
     GET_BALLOON_DELAY = 0, -- delay before getting balloons again if none are detected
     WAIT_FOR_BREAK = 2 -- delay in seconds to wait for the gift to break
 }
-
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
 
--- for _, lootbag in pairs(game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags"):GetChildren()) do
---     if lootbag then
---         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Lootbags_Claim"):FireServer(unpack( { [1] = { [1] = lootbag.Name, }, } ))
---         lootbag:Destroy()
---         task.wait()
---     end
--- end
 
--- game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags").ChildAdded:Connect(function(lootbag)
---     task.wait()
---     if lootbag then
---         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Lootbags_Claim"):FireServer(unpack( { [1] = { [1] = lootbag.Name, }, } ))
---         lootbag:Destroy()
---     end
--- end)
+for _, lootbag in pairs(game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags"):GetChildren()) do
+    if lootbag then
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Lootbags_Claim"):FireServer(unpack( { [1] = { [1] = lootbag.Name, }, } ))
+        lootbag:Destroy()
+        task.wait()
+    end
+end
 
--- game:GetService("Workspace").__THINGS:FindFirstChild("Orbs").ChildAdded:Connect(function(orb)
---     task.wait()
---     if orb then
---         game:GetService("ReplicatedStorage"):WaitForChild("Network"):FindFirstChild("Orbs: Collect"):FireServer(unpack( { [1] = { [1] = tonumber(orb.Name), }, } ))
---         orb:Destroy()
---     end
--- end)
+game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags").ChildAdded:Connect(function(lootbag)
+    task.wait()
+    if lootbag then
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Lootbags_Claim"):FireServer(unpack( { [1] = { [1] = lootbag.Name, }, } ))
+        lootbag:Destroy()
+    end
+end)
+
+game:GetService("Workspace").__THINGS:FindFirstChild("Orbs").ChildAdded:Connect(function(orb)
+    task.wait()
+    if orb then
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):FindFirstChild("Orbs: Collect"):FireServer(unpack( { [1] = { [1] = tonumber(orb.Name), }, } ))
+        orb:Destroy()
+    end
+end)
 
 print("boga boga")
 task.wait(getgenv().autoBalloonConfig.START_DELAY)
@@ -50,40 +50,40 @@ local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Ensure 'Highlight' exists before attempting to destroy it
--- local highlight = Workspace.__THINGS.Breakables:FindFirstChild("Highlight")
--- if highlight then
---     highlight:Destroy()
--- end
+local highlight = Workspace.__THINGS.Breakables:FindFirstChild("Highlight")
+if highlight then
+    highlight:Destroy()
+end
 
--- local function IsWithinDistance(object, maxDistance)
---     local localPlayer = Players.LocalPlayer
---     if localPlayer and localPlayer.Character then
---         local playerPosition = localPlayer.Character.HumanoidRootPart.Position
---         local objectPosition = object.WorldPivot.Position
---         local distance = (playerPosition - objectPosition).magnitude
---         return distance <= maxDistance
---     end
---     return false
--- end
+local function IsWithinDistance(object, maxDistance)
+    local localPlayer = Players.LocalPlayer
+    if localPlayer and localPlayer.Character then
+        local playerPosition = localPlayer.Character.HumanoidRootPart.Position
+        local objectPosition = object.WorldPivot.Position
+        local distance = (playerPosition - objectPosition).magnitude
+        return distance <= maxDistance
+    end
+    return false
+end
 
--- MaxDistance = 5
--- spawn(function()
---     while true do
---         local breakables = Workspace.__THINGS.Breakables:GetChildren()
---         for _, breakable in pairs(breakables) do
---             if IsWithinDistance(breakable, MaxDistance) then
---                 local Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
---                 while Model and IsWithinDistance(Model, MaxDistance) do
---                     local args = { breakable.Name } -- Assuming the name of the model is the argument
---                     ReplicatedStorage:WaitForChild("Network"):WaitForChild("Breakables_PlayerDealDamage"):FireServer(unpack(args))
---                     Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
---                     wait()
---                 end
---             end
---         end
---         wait()
---     end
--- end)
+MaxDistance = 5
+spawn(function()
+    while true do
+        local breakables = Workspace.__THINGS.Breakables:GetChildren()
+        for _, breakable in pairs(breakables) do
+            if IsWithinDistance(breakable, MaxDistance) then
+                local Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
+                while Model and IsWithinDistance(Model, MaxDistance) do
+                    local args = { breakable.Name } -- Assuming the name of the model is the argument
+                    ReplicatedStorage:WaitForChild("Network"):WaitForChild("Breakables_PlayerDealDamage"):FireServer(unpack(args))
+                    Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
+                    wait()
+                end
+            end
+        end
+        wait()
+    end
+end)
 
 while getgenv().autoBalloon do
     local balloonIds = {}
