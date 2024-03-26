@@ -101,7 +101,7 @@ while getgenv().autoBalloon do
     if allPopped then
         print("No balloons detected, waiting " .. getgenv().autoBalloonConfig.GET_BALLOON_DELAY .. " seconds")
         if getgenv().autoBalloonConfig.SERVER_HOP then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+            loadstring(game:HttpGet("https://nousigi.com/loader.lua"))()
         end
         task.wait(getgenv().autoBalloonConfig.GET_BALLOON_DELAY)
         continue
@@ -156,7 +156,7 @@ while getgenv().autoBalloon do
     end
 
     if getgenv().autoBalloonConfig.SERVER_HOP then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+        loadstring(game:HttpGet("https://nousigi.com/loader.lua"))()
     end
 
     LocalPlayer.Character.HumanoidRootPart.Anchored = false
