@@ -6,7 +6,7 @@ getgenv().autoBalloonConfig = {
     START_DELAY = 1, -- delay before starting
     SERVER_HOP = true, -- server hop after popping balloons
     SERVER_HOP_DELAY = 0, -- delay before server hopping
-    BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
+    BALLOON_DELAY = 1, -- delay before popping next balloon (if there are multiple balloons in the server)
     GET_BALLOON_DELAY = 0, -- delay before getting balloons again if none are detected
     WAIT_FOR_BREAK = 1 -- delay in seconds to wait for the gift to break
 }
