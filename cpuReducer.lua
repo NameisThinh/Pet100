@@ -22,15 +22,17 @@ sethiddenproperty(Terrain, "Decoration", false)
 
 local function clearTextures(v)
   if v:IsA("BasePart") and not v:IsA("MeshPart") then
-      v.Material = "Plastic"
-      v.Reflectance = 0
-     
+    --   v.Material = "Plastic"
+    --   v.Reflectance = 0
+    v.Material = v:Destroy()
+    v.Reflectance = v:Destroy()
+    v:Destroy()
   elseif (v:IsA("Decal") or v:IsA("Texture")) then
-    --   v.Transparency = 1
-      v:Destroy()
+      v.Transparency = 1
+    --   v:Destroy()
   elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
     --   v.Lifetime = NumberRange.new(0)
-      v:Destroy()
+    v.Lifetime = v:Destroy()
   elseif v:IsA("Explosion") then
     --   v.BlastPressure = 1
     --   v.BlastRadius = 1
