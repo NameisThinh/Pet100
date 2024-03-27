@@ -1,7 +1,7 @@
--- repeat
---   task.wait()
--- until game:IsLoaded()
-game:IsLoaded()
+repeat
+  task.wait()
+until game:IsLoaded()
+
 local Workspace = game:GetService("Workspace")
 local Terrain = Workspace:WaitForChild("Terrain")
 Terrain.WaterReflectance = 0
