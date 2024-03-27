@@ -32,8 +32,8 @@ local function clearTextures(v)
     --   v.Lifetime = NumberRange.new(0)
       v:Destroy()
   elseif v:IsA("Explosion") then
-      v.BlastPressure = 1
-      v.BlastRadius = 1
+    --   v.BlastPressure = 1
+    --   v.BlastRadius = 1
       v:Destroy()
   elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
       v.Enabled = false
