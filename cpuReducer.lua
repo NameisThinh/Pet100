@@ -24,12 +24,13 @@ local function clearTextures(v)
   if v:IsA("BasePart") and not v:IsA("MeshPart") then
       v.Material = "Plastic"
       v.Reflectance = 0
-      v:Destroy()
+     
   elseif (v:IsA("Decal") or v:IsA("Texture")) then
-      v.Transparency = 1
+    --   v.Transparency = 1
       v:Destroy()
   elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-      v.Lifetime = NumberRange.new(0)
+    --   v.Lifetime = NumberRange.new(0)
+      v:Destroy()
   elseif v:IsA("Explosion") then
       v.BlastPressure = 1
       v.BlastRadius = 1
@@ -38,9 +39,9 @@ local function clearTextures(v)
       v.Enabled = false
       v:Destroy()
   elseif v:IsA("MeshPart") then
-      v.Material = "Plastic"
-      v.Reflectance = 0
-      v.TextureID = 10385902758728957
+    --   v.Material = "Plastic"
+    --   v.Reflectance = 0
+    --   v.TextureID = 10385902758728957
       v:Destroy()
   elseif v:IsA("SpecialMesh")  then
       v.TextureId = 0
