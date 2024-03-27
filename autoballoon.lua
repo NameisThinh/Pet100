@@ -105,6 +105,7 @@ while getgenv().autoBalloon do
         print("No balloons detected, waiting " .. getgenv().autoBalloonConfig.GET_BALLOON_DELAY .. " seconds")
         if getgenv().autoBalloonConfig.SERVER_HOP then
             loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
         end
         task.wait(getgenv().autoBalloonConfig.GET_BALLOON_DELAY)
         continue
@@ -160,8 +161,11 @@ while getgenv().autoBalloon do
 
     if getgenv().autoBalloonConfig.SERVER_HOP then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
     end
 
     LocalPlayer.Character.HumanoidRootPart.Anchored = false
     LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
+
+
