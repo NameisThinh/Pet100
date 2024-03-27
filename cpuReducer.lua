@@ -15,30 +15,39 @@ Lighting.GlobalShadows = false
 Lighting.FogEnd = 9e100
 Lighting.FogStart = 0
 
+
 sethiddenproperty(Lighting, "Technology", 2)
+
 sethiddenproperty(Terrain, "Decoration", false)
 
 local function clearTextures(v)
   if v:IsA("BasePart") and not v:IsA("MeshPart") then
       v.Material = "Plastic"
       v.Reflectance = 0
+      v:Destroy()
   elseif (v:IsA("Decal") or v:IsA("Texture")) then
       v.Transparency = 1
+      v:Destroy()
   elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
       v.Lifetime = NumberRange.new(0)
   elseif v:IsA("Explosion") then
       v.BlastPressure = 1
       v.BlastRadius = 1
+      v:Destroy()
   elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
       v.Enabled = false
+      v:Destroy()
   elseif v:IsA("MeshPart") then
       v.Material = "Plastic"
       v.Reflectance = 0
       v.TextureID = 10385902758728957
+      v:Destroy()
   elseif v:IsA("SpecialMesh")  then
       v.TextureId = 0
+      v:Destroy()
   elseif v:IsA("ShirtGraphic") then
       v.Graphic = 1
+      v:Destroy()
   elseif (v:IsA("Shirt") or v:IsA("Pants")) then
       v[v.ClassName .. "Template"] = 1
   elseif v.Name == "Foilage" and v:IsA("Folder") then
@@ -58,4 +67,3 @@ end
 Workspace.DescendantAdded:Connect(function(v)
   clearTextures(v)
 end)
-1
