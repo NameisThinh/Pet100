@@ -82,8 +82,8 @@ spawn(function()
         end
         wait()
     end
-end)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+end)
 while getgenv().autoBalloon do
     
     local balloonIds = {}
