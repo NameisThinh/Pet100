@@ -44,7 +44,7 @@ local function clearTextures(v)
   elseif v.Name == "Foilage" and v:IsA("Folder") then
       v:Destroy()
   elseif string.find(v.Name, "Tree") or string.find(v.Name, "Water") or string.find(v.Name, "Bush") or string.find(v.Name, "grass") then
-      -- task.wait()
+      task.wait()
       v:Destroy()
   end
 end
