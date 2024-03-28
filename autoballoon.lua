@@ -48,11 +48,17 @@ local function clearTextures(v)
         v:Destroy()
     elseif v.Name == "Foilage" and v:IsA("Folder") then
         v:Destroy()
+    elseif v.Name == "Foil" and v:IsA("Folder") then
+        v:Destroy()
     elseif v.Name == "Wood" and v:IsA("Folder") then
         v:Destroy()
     elseif v.Name == "Sky" and v:IsA("Folder") then
         v:Destroy()
-    elseif v.Name == "Grass" and v:IsA("Folder") then
+    elseif v.Name == "grass" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "ice" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "glass" and v:IsA("Folder") then
         v:Destroy()
     elseif v.Name == "Tree" and v:IsA("Folder") then
         v:Destroy()
