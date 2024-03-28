@@ -64,6 +64,12 @@ local function clearTextures(v)
         v:Destroy()
     elseif v.Name == "cobblestone" and v:IsA("Folder") then
         v:Destroy()
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+        v.Enabled = false
+    elseif v:IsA("SpecialMesh")  then
+        v.TextureId = 0
+    elseif v:IsA("ShirtGraphic") then
+        v:Destroy()
     end
 end
 for _, v in pairs(Workspace:GetDescendants()) do
