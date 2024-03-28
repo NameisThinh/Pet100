@@ -37,7 +37,26 @@ Lighting.FogStart = 0
 sethiddenproperty(Lighting, "Technology", 2)
 
 sethiddenproperty(Terrain, "Decoration", false)
+
 game:GetService("Lighting"):ClearAllChildren()
+local function clearTextures(v)
+    if v:IsA("BasePart") and not v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif (v:IsA("Decal") or v:IsA("Texture")) then
+        v.Transparency = 1
+    elseif v.Name == "Foilage" and v:IsA("Folder") then
+        v:Destroy()
+    end
+end
+for _, v in pairs(Workspace:GetDescendants()) do
+    clearTextures(v)
+end
+
+Workspace.DescendantAdded:Connect(function(v)
+    clearTextures(v)
+end)
+
 
 pcall(function()
     LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
