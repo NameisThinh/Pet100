@@ -14,7 +14,7 @@ getgenv().autoBalloonConfig = {
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+
 -- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -45,7 +45,7 @@ local function clearTextures(v)
         v.Reflectance = 0
     elseif (v:IsA("Decal") or v:IsA("Texture")) then
         v.Transparency = 1
-        v:Destroy()
+     
     elseif v.Name == "Foilage" and v:IsA("Folder") then
         v:Destroy()
     elseif v.Name == "Wood" and v:IsA("Folder") then
@@ -63,6 +63,8 @@ local function clearTextures(v)
     elseif v.Name == "Brick" and v:IsA("Folder") then
         v:Destroy()
     elseif v.Name == "cobblestone" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "woodplanks" and v:IsA("Folder") then
         v:Destroy()
     elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
         v.Enabled = false
