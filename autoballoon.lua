@@ -58,6 +58,12 @@ local function clearTextures(v)
         v:Destroy()
     elseif v.Name == "Bush" and v:IsA("Folder") then
         v:Destroy()
+    elseif v.Name == "Water" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Brick" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "cobblestone" and v:IsA("Folder") then
+        v:Destroy()
     end
 end
 for _, v in pairs(Workspace:GetDescendants()) do
