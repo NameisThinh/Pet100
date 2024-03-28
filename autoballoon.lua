@@ -70,6 +70,11 @@ local function clearTextures(v)
         v.TextureId = 0
     elseif v:IsA("ShirtGraphic") then
         v:Destroy()
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
     end
 end
 for _, v in pairs(Workspace:GetDescendants()) do
