@@ -22,8 +22,22 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local breakables = game:GetService("Workspace"):WaitForChild("__THINGS"):WaitForChild("Breakables")
 local Client = ReplicatedStorage:WaitForChild("Library"):WaitForChild("Client")
 
+local Workspace = game:GetService("Workspace")
+local Terrain = Workspace:WaitForChild("Terrain")
+Terrain.WaterReflectance = 0
+Terrain.WaterTransparency = 1
+Terrain.WaterWaveSize = 0
+Terrain.WaterWaveSpeed = 0
 
+local Lighting = game:GetService("Lighting")
+Lighting.Brightness = 0
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e100
+Lighting.FogStart = 0
+sethiddenproperty(Lighting, "Technology", 2)
 
+sethiddenproperty(Terrain, "Decoration", false)
+game:GetService("Lighting"):ClearAllChildren()
 pcall(function()
     LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 
