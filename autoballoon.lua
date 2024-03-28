@@ -45,7 +45,12 @@ local function clearTextures(v)
         v.Reflectance = 0
     elseif (v:IsA("Decal") or v:IsA("Texture")) then
         v.Transparency = 1
-    elseif v.Name == "Foilage" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Foil" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "wood" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "sky" and v:IsA("Folder") then
         v:Destroy()
     end
 end
