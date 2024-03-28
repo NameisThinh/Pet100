@@ -14,7 +14,7 @@ getgenv().autoBalloonConfig = {
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
 -- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
