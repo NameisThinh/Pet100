@@ -3,15 +3,48 @@
 getgenv().autoBalloon = true
 
 getgenv().autoBalloonConfig = {
-    START_DELAY = 1, -- delay before starting
-    SERVER_HOP = true, -- server hop after popping balloons
+    SERVER_HOP_AFTER_NOT_FIND = false, -- if the balloon isn't found, instead of checking through the rest of the balloons, it will just server hop
+    SERVER_MINIMUM_TIME = 60, -- minimum time to wait before server hopping
+    START_DELAY = 0, -- delay before starting
     SERVER_HOP_DELAY = 0, -- delay before server hopping
-    BALLOON_DELAY = 1, -- delay before popping next balloon (if there are multiple balloons in the server)
+    BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
     GET_BALLOON_DELAY = 0, -- delay before getting balloons again if none are detected
-    WAIT_FOR_BREAK = 1.5 -- delay in seconds to wait for the gift to break
+    -- WAIT_FOR_BREAK = 1.5 -- delay in seconds to wait for the gift to break
+    GIFT_BOX_BREAK_FAILSAFE = 1.5, -- seconds to wait before skipping gift boxes if they don't function properly
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local breakables = game:GetService("Workspace"):WaitForChild("__THINGS"):WaitForChild("Breakables")
+local Client = ReplicatedStorage:WaitForChild("Library"):WaitForChild("Client")
+
+pcall(function()
+    LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
+
+    if getconnections then
+        for _, v in pairs(getconnections(LocalPlayer.Idled)) do
+            v:Disable()
+        end
+    else
+        LocalPlayer.Idled:Connect(function()
+            game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+            task.wait(1)
+            game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        end)
+    end
+end)
+
+local startTimestamp = os.time()
+task.wait(getgenv().autoBalloonConfig.START_DELAY)
+local balloonGifts = {}
+
+require(Client.PlayerPet).CalculateSpeedMultiplier = function()
+    return 200
+end
 
 for _, lootbag in pairs(game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags"):GetChildren()) do
     if lootbag then
@@ -37,57 +70,24 @@ game:GetService("Workspace").__THINGS:FindFirstChild("Orbs").ChildAdded:Connect(
     end
 end)
 
-print("boga boga")
-task.wait(getgenv().autoBalloonConfig.START_DELAY)
-
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LocalPlayer = game:GetService("Players").LocalPlayer
-
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
--- Ensure 'Highlight' exists before attempting to destroy it
-local highlight = Workspace.__THINGS.Breakables:FindFirstChild("Highlight")
-if highlight then
-    highlight:Destroy()
-end
-
-local function IsWithinDistance(object, maxDistance)
-    local localPlayer = Players.LocalPlayer
-    if localPlayer and localPlayer.Character then
-        local playerPosition = localPlayer.Character.HumanoidRootPart.Position
-        local objectPosition = object.WorldPivot.Position
-        local distance = (playerPosition - objectPosition).magnitude
-        return distance <= maxDistance
-    end
-    return false
-end
-
-MaxDistance = 5
-spawn(function()
-    while true do
-        local breakables = Workspace.__THINGS.Breakables:GetChildren()
-        for _, breakable in pairs(breakables) do
-            if IsWithinDistance(breakable, MaxDistance) then
-                local Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
-                while Model and IsWithinDistance(Model, MaxDistance) do
-                    local args = { breakable.Name } -- Assuming the name of the model is the argument
-                    ReplicatedStorage:WaitForChild("Network"):WaitForChild("Breakables_PlayerDealDamage"):FireServer(unpack(args))
-                    Model = Workspace.__THINGS.Breakables:FindFirstChild(breakable.Name)
-                    wait()
-                end
-            end
+breakables.ChildAdded:Connect(function(child)
+    pcall(function()
+        if string.find(child:GetAttribute("BreakableID"), "Balloon Gift") and child:GetAttribute("OwnerUsername") == LocalPlayer.Name then
+            table.insert(balloonGifts, child)
         end
-        wait()
-    end
-
+    end)
 end)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/cpuReducer.lua"))()
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
+breakables.ChildRemoved:Connect(function(child)
+    pcall(function()
+        if string.find(child:GetAttribute("BreakableID"), "Balloon Gift") and child:GetAttribute("OwnerUsername") == LocalPlayer.Name then
+            table.remove(balloonGifts, table.find(balloonGifts, child))
+        end
+    end)
+end)
+
+
 while getgenv().autoBalloon do
-    
     local balloonIds = {}
 
     local getActiveBalloons = ReplicatedStorage.Network.BalloonGifts_GetActiveBalloons:InvokeServer()
@@ -96,76 +96,122 @@ while getgenv().autoBalloon do
     for i, v in pairs(getActiveBalloons) do
         if not v.Popped then
             allPopped = false
-            print("Unpopped balloon found")
             balloonIds[i] = v
         end
     end
 
+    local notContinuing = true
     if allPopped then
-        print("No balloons detected, waiting " .. getgenv().autoBalloonConfig.GET_BALLOON_DELAY .. " seconds")
-        if getgenv().autoBalloonConfig.SERVER_HOP then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-
-        end
+        print("No balloons detected, waiting " .. tostring(getgenv().autoBalloonConfig.GET_BALLOON_DELAY) .. " seconds")
         task.wait(getgenv().autoBalloonConfig.GET_BALLOON_DELAY)
-        continue
+        notContinuing = false
     end
 
-    if not getgenv().autoBalloon then
-        break
-    end
+    if notContinuing then
+        if not getgenv().autoBalloon then
+            break
+        end
 
-    local originalPosition = LocalPlayer.Character.HumanoidRootPart.CFrame
+        local originalPosition = LocalPlayer.Character.HumanoidRootPart.CFrame
 
-    LocalPlayer.Character.HumanoidRootPart.Anchored = true
-    for balloonId, balloonData in pairs(balloonIds) do
         LocalPlayer.Character.HumanoidRootPart.Anchored = true
-        print("Popping balloon")
+        for balloonId, balloonData in pairs(balloonIds) do
+            local balloonPosition = balloonData.Position
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonPosition.X, balloonPosition.Y + 30, balloonPosition.Z)
+            ReplicatedStorage.Network.Slingshot_Toggle:InvokeServer()
+            task.wait()
+            ReplicatedStorage.Network.Slingshot_FireProjectile:InvokeServer(Vector3.new(balloonPosition.X, balloonPosition.Y + 25, balloonPosition.Z), 0.5794160315249014, -0.8331117721691044, 200)
+            task.wait()
+            ReplicatedStorage.Network.BalloonGifts_BalloonHit:FireServer(balloonId)
+            task.wait()
+            ReplicatedStorage.Network.Slingshot_Unequip:InvokeServer()
 
-        local balloonPosition = balloonData.Position
+            -- BREAK BREAKABLES
+            print("Breaking balloon boxes")
 
-        ReplicatedStorage.Network.Slingshot_Toggle:InvokeServer()
+            local balloonLandPos = balloonData.LandPosition
 
-        task.wait()
+            local loadBreaks
+            local foundBreaks = false
 
-        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonPosition.X, balloonPosition.Y + 30, balloonPosition.Z)
+            loadBreaks = breakables.ChildAdded:Connect(function(child)
+                if string.find(child:GetAttribute("BreakableID"), "Balloon Gift") and child:GetAttribute("OwnerUsername") == LocalPlayer.Name then
+                    foundBreaks = true
+                end
+            end)
 
-        task.wait()
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y+5, balloonLandPos.Z)
+            LocalPlayer.Character.HumanoidRootPart.Anchored = false
 
-        local args = {
-            [1] = Vector3.new(balloonPosition.X, balloonPosition.Y + 25, balloonPosition.Z),
-            [2] = 0.5794160315249014,
-            [3] = -0.8331117721691044,
-            [4] = 200
-        }
+            print("Waiting for balloon drop")
+            local counter = 0
 
-        ReplicatedStorage.Network.Slingshot_FireProjectile:InvokeServer(unpack(args))
+            local exiting = false
+            while not foundBreaks do
+                counter = counter + 1
+                if counter > (getgenv().autoBalloonConfig.GIFT_BOX_BREAK_FAILSAFE * 20) then
+                    print("Balloon drop not found")
+                    counter = 0
+                    exiting = true
+                    if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
+                        local timeElapsed = os.time() - startTimestamp
+                        if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+                        end
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
+                    end
+                    break
+                end
+                task.wait(0.05)
+            end
 
-        task.wait(0.1)
+            if not exiting then
+                loadBreaks:Disconnect()
+                task.wait()
 
-        local args = {
-            [1] = balloonId
-        }
+                for _, v in pairs(balloonGifts) do
+                    local brokeBox = false
+                    task.spawn(function()
+                        while breakables:FindFirstChild(v.Name) do
+                            game:GetService("ReplicatedStorage").Network.Breakables_PlayerDealDamage:FireServer(v.Name)
+                            task.wait()
+                        end
+                        brokeBox = true
+                    end)
 
-        ReplicatedStorage.Network.BalloonGifts_BalloonHit:FireServer(unpack(args))
+                    local counter = 0
+                    while counter < (getgenv().autoBalloonConfig.GIFT_BOX_BREAK_FAILSAFE * 20) do
+                        if brokeBox then
+                            break
+                        end
+                        counter = counter + 1
+                        task.wait(0.05)
+                    end
+
+                    print("Broke balloon box")
+                end
+                LocalPlayer.Character.HumanoidRootPart.Anchored = true
+            end
+            print("After exting")
+
+            print("Popped balloon")
+            task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
+        end
+
+        if getgenv().autoBalloonConfig.SERVER_HOP then
+            local timeElapsed = os.time() - startTimestamp
+            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+            end
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+        end
 
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
-
-        task.wait(getgenv().autoBalloonConfig.WAIT_FOR_BREAK)
-
-        ReplicatedStorage.Network.Slingshot_Unequip:InvokeServer()
-
-        print("Popped balloon, waiting " .. tostring(getgenv().autoBalloonConfig.BALLOON_DELAY) .. " seconds")
-        task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
+        LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
 
-    if getgenv().autoBalloonConfig.SERVER_HOP then
+    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-  
     end
-
-    LocalPlayer.Character.HumanoidRootPart.Anchored = false
-    LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
-
 
