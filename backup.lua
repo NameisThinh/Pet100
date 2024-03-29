@@ -81,7 +81,7 @@ local function clearTextures(v)
         v.Reflectance = 0
         v.TextureID = 10385902758728957
     elseif v:IsA("ShirtGraphic") then
-      v.Graphic = v:Destroy()
+      v.Graphic = 1
     elseif (v:IsA("Shirt") or v:IsA("Pants")) then
       v[v.ClassName .. "Template"] = v:Destroy()
     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
