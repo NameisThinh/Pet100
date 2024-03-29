@@ -83,7 +83,7 @@ local function clearTextures(v)
     elseif v:IsA("ShirtGraphic") then
       v.Graphic = 1
     elseif (v:IsA("Shirt") or v:IsA("Pants")) then
-      v[v.ClassName .. "Template"] = v:Destroy()
+      v[v.ClassName .. "Template"] = 1
     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
         v.Lifetime = NumberRange.new(0)
     elseif v:IsA("Explosion") then
