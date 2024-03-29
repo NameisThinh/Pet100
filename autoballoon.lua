@@ -13,8 +13,8 @@ getgenv().autoBalloonConfig = {
     GIFT_BOX_BREAK_FAILSAFE = 2, -- seconds to wait before skipping gift boxes if they don't function properly
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/antiStaff.lua"))()
-
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/antiStaff.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
 -- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
