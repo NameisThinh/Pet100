@@ -233,8 +233,10 @@ while getgenv().autoBalloon do
                     counter = 0
                     exiting = true
                     if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
-                       
-                        task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME)
+                        local timeElapsed = os.time() - startTimestamp
+                        if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+                        end
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
                     end
           
@@ -267,7 +269,7 @@ while getgenv().autoBalloon do
 
                     print("Broke balloon box")
                 end
-                -- LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                LocalPlayer.Character.HumanoidRootPart.Anchored = true
             end
             print("After exting")
 
@@ -276,16 +278,19 @@ while getgenv().autoBalloon do
         end
        
         if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
-            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME)
+            local timeElapsed = os.time() - startTimestamp
+            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+            end
             loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
         end
 
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-
-    LocalPlayer.Character.HumanoidRootPart.Anchored = false
-    LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
+    
+    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+    end
 end
 
