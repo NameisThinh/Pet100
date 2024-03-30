@@ -267,7 +267,7 @@ while getgenv().autoBalloon do
 
                     print("Broke balloon box")
                 end
-                LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                -- LocalPlayer.Character.HumanoidRootPart.Anchored = true
             end
             print("After exting")
 
