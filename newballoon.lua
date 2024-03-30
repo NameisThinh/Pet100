@@ -233,13 +233,11 @@ while getgenv().autoBalloon do
                     counter = 0
                     exiting = true
                     if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
-                        local timeElapsed = os.time() - startTimestamp
-                        if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-                            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
-                        end
+                       
+                        task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
                     end
-                    break
+          
                 end
                 task.wait(0.05)
             end
@@ -278,10 +276,7 @@ while getgenv().autoBalloon do
         end
        
         if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
-            local timeElapsed = os.time() - startTimestamp
-            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-                task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
-            end
+            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME)
             loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
         end
 
