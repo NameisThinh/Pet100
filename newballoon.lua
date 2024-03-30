@@ -277,11 +277,7 @@ while getgenv().autoBalloon do
             task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
         end
        
-        if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
-            local timeElapsed = os.time() - startTimestamp
-            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-                task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
-            end
+        if getgenv().autoBalloonConfig.SERVER_HOP then 
             loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
         end
 
@@ -289,10 +285,6 @@ while getgenv().autoBalloon do
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
 
-    if getgenv().autoBalloonConfig.SERVER_HOP then 
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-    end
-    LocalPlayer.Character.HumanoidRootPart.Anchored = false
-        LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
+   
 end
 
