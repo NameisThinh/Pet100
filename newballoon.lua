@@ -288,9 +288,11 @@ while getgenv().autoBalloon do
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
-    
-    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+
+    if getgenv().autoBalloonConfig.SERVER_HOP then 
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
     end
+    LocalPlayer.Character.HumanoidRootPart.Anchored = false
+        LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
 
