@@ -284,5 +284,8 @@ while getgenv().autoBalloon do
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
     loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+
+    LocalPlayer.Character.HumanoidRootPart.Anchored = false
+    LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
 
