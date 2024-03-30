@@ -4,6 +4,7 @@ getgenv().autoBalloon = true
 
 getgenv().autoBalloonConfig = {
     SERVER_HOP_AFTER_NOT_FIND = false, -- if the balloon isn't found, instead of checking through the rest of the balloons, it will just server hop
+    SERVER_HOP= true,
     SERVER_MINIMUM_TIME = 5, -- minimum time to wait before server hopping
     START_DELAY = 0, -- delay before starting
     SERVER_HOP_DELAY = 1, -- delay before server hopping
@@ -276,7 +277,7 @@ while getgenv().autoBalloon do
             task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
         end
 
-        if getgenv().autoBalloonConfig.SERVER_HOP then
+        if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
             local timeElapsed = os.time() - startTimestamp
             if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
                 task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
