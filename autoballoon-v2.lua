@@ -1,22 +1,8 @@
 
-
-getgenv().autoBalloon = true
-
-getgenv().autoBalloonConfig = {
-    
-    SERVER_HOP= true,
-    SERVER_MINIMUM_TIME = 5, -- minimum time to wait before server hopping
-    START_DELAY = 0, -- delay before starting
-    SERVER_HOP_DELAY = 1, -- delay before server hopping
-    BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
-    GET_BALLOON_DELAY = 1, -- delay before getting balloons again if none are detected
-
-    GIFT_BOX_BREAK_FAILSAFE = 2, -- seconds to wait before skipping gift boxes if they don't function properly
-}
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 -- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/antiStaff.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/cpuReducer.lua"))()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/antiStaff.lua"))()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -101,6 +87,11 @@ Workspace.DescendantAdded:Connect(function(v)
 end)
 
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local breakables = game:GetService("Workspace"):WaitForChild("__THINGS"):WaitForChild("Breakables")
+local Client = ReplicatedStorage:WaitForChild("Library"):WaitForChild("Client")
+
 pcall(function()
     LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 
@@ -117,7 +108,7 @@ pcall(function()
     end
 end)
 
--- local startTimestamp = os.time()
+local startTimestamp = os.time()
 task.wait(getgenv().autoBalloonConfig.START_DELAY)
 local balloonGifts = {}
 
@@ -232,9 +223,14 @@ while getgenv().autoBalloon do
                     print("Balloon drop not found")
                     counter = 0
                     exiting = true
-                      break
-                 
-                    -- break
+                    if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND then
+                        local timeElapsed = os.time() - startTimestamp
+                        if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                            task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+                        end
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+                    end
+                    break
                 end
                 task.wait(0.05)
             end
@@ -273,19 +269,19 @@ while getgenv().autoBalloon do
         end
 
         if getgenv().autoBalloonConfig.SERVER_HOP then
+            local timeElapsed = os.time() - startTimestamp
+            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+                task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+            end
             loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-
         end
 
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
 
-    if getgenv().autoBalloonConfig.SERVER_HOP then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-
+    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
     end
-
-  
 end
-
+-- MADE FIREDEVIL DO NOT SKID
