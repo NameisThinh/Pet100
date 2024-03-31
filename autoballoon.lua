@@ -219,7 +219,7 @@ while getgenv().autoBalloon do
                 end
             end)
 
-            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y+25, balloonLandPos.Z)
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y+5, balloonLandPos.Z)
             LocalPlayer.Character.HumanoidRootPart.Anchored = false
 
             print("Waiting for balloon drop")
