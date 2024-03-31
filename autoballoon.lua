@@ -232,11 +232,8 @@ while getgenv().autoBalloon do
                     print("Balloon drop not found")
                     counter = 0
                     exiting = true
-                
-                    if getgenv().autoBalloonConfig.SERVER_HOP then
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-            
-                    end                    
+                      break
+                 
                     -- break
                 end
                 task.wait(0.05)
