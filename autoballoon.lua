@@ -146,7 +146,7 @@ while getgenv().autoBalloon do
                         if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
                             task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
                         end
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
                     end
                     break
                 end
@@ -191,7 +191,7 @@ while getgenv().autoBalloon do
             if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
                 task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
             end
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
         end
 
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
@@ -199,7 +199,7 @@ while getgenv().autoBalloon do
     end
 
     if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/serverhop.lua"))()
     end
 end
 -- MADE FIREDEVIL DO NOT SKID
