@@ -1,4 +1,44 @@
 
+local Workspace = game:GetService("Workspace")
+local Terrain = Workspace:WaitForChild("Terrain")
+Terrain.WaterReflectance = 0
+Terrain.WaterTransparency = 1
+Terrain.WaterWaveSize = 0
+Terrain.WaterWaveSpeed = 0
+
+local Lighting = game:GetService("Lighting")
+Lighting.Brightness = 0
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e100
+Lighting.FogStart = 0
+sethiddenproperty(Lighting, "Technology", 2)
+
+sethiddenproperty(Terrain, "Decoration", false)
+
+game:GetService("Lighting"):ClearAllChildren()
+local function clearTextures(v)
+    if v:IsA("BasePart") and not v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif v:IsA("ShirtGraphic") then
+      v.Graphic = 1
+    elseif (v:IsA("Shirt") or v:IsA("Pants")) then
+      v[v.ClassName .. "Template"] = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    end
+end
+for _, v in pairs(Workspace:GetDescendants()) do
+    clearTextures(v)
+end
+
+Workspace.DescendantAdded:Connect(function(v)
+    clearTextures(v)
+end)
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/antiStaff.lua"))()
 
