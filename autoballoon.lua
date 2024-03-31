@@ -56,12 +56,12 @@ local function clearTextures(v)
       elseif v:IsA("MeshPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
-        -- v.TextureID = 10385902758728957
-        v.TextureID = v:Destroy()
+        v.TextureID = 10385902758728957
+
     elseif v:IsA("ShirtGraphic") then
-      v.Graphic = 0
+      v.Graphic = 1
     elseif (v:IsA("Shirt") or v:IsA("Pants")) then
-      v[v.ClassName .. "Template"] = 0
+      v[v.ClassName .. "Template"] = 1
     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
         v.Lifetime = NumberRange.new(0)
     elseif v:IsA("Explosion") then
