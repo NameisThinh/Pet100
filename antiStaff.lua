@@ -62,4 +62,3 @@ game.Players.PlayerAdded:Connect(function(player)
         serverhop(player)
     end
 end)
-1
