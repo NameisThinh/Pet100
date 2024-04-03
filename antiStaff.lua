@@ -6,7 +6,7 @@ local function serverhop(player)
     task.wait(timeToWait)
 
     local success, _ = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
     end)
 
     if not success then
