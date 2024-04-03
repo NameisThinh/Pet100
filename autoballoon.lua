@@ -20,6 +20,43 @@ local function clearTextures(v)
     if v:IsA("BasePart") and not v:IsA("MeshPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
+    elseif (v:IsA("Decal") or v:IsA("Texture")) then
+        v.Transparency = 1
+        v:Destroy()
+    elseif v.Name == "Foilage" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Foil" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Wood" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Sky" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "grass" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "ice" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "glass" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Tree" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Bush" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Water" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Brick" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "cobblestone" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "woodplanks" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+        v.Enabled = false
+    elseif v:IsA("SpecialMesh")  then
+        v.TextureId = 0
+      elseif v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+        v.TextureID = 10385902758728957
     elseif v:IsA("ShirtGraphic") then
       v.Graphic = 1
     elseif (v:IsA("Shirt") or v:IsA("Pants")) then
@@ -48,7 +85,6 @@ getgenv().autoBalloonConfig = {
     SERVER_HOP_DELAY = 1, -- delay before server hopping
     BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
     GET_BALLOON_DELAY = 1, -- delay before getting balloons again if none are detected
-    -- WAIT_FOR_BREAK = 1.5 -- delay in seconds to wait for the gift to break
     GIFT_BOX_BREAK_FAILSAFE = 1.5, -- seconds to wait before skipping gift boxes if they don't function properly
 }
 
