@@ -228,7 +228,7 @@ while getgenv().autoBalloon do
                 task.wait(0.1)
             end
 
-            loadBreaks:Disconnect()
+ 
 
             if not exiting then
                 for _, v in pairs(balloonGifts) do
