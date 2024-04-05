@@ -187,40 +187,88 @@ while getgenv().autoBalloon do
         LocalPlayer.Character.HumanoidRootPart.Anchored = true
 
         for balloonId, balloonData in pairs(balloonIds) do
-            -- Shooting balloon code...
-            -- Breaking balloon box code...
+            local balloonPosition = balloonData.Position
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonPosition.X, balloonPosition.Y + 30, balloonPosition.Z)
+            ReplicatedStorage.Network.Slingshot_Toggle:InvokeServer()
+            task.wait()
+            ReplicatedStorage.Network.Slingshot_FireProjectile:InvokeServer(Vector3.new(balloonPosition.X, balloonPosition.Y + 25, balloonPosition.Z), 0.5794160315249014, -0.8331117721691044, 200)
+            task.wait()
+            ReplicatedStorage.Network.BalloonGifts_BalloonHit:FireServer(balloonId)
+            task.wait()
+            ReplicatedStorage.Network.Slingshot_Unequip:InvokeServer()
 
-            -- Checking for server hop condition
-            if getgenv().autoBalloonConfig.SERVER_HOP_AFTER_NOT_FIND and not foundBreaks then
-                local timeElapsed = os.time() - startTimestamp
-                if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-                    task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
+            -- BREAK BREAKABLES
+            print("Breaking balloon boxes")
+
+            local balloonLandPos = balloonData.LandPosition
+
+            local loadBreaks
+            local foundBreaks = false
+
+            loadBreaks = breakables.ChildAdded:Connect(function(child)
+                if string.find(child:GetAttribute("BreakableID"), "Balloon Gift") and child:GetAttribute("OwnerUsername") == LocalPlayer.Name then
+                    foundBreaks = true
                 end
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
-                break -- Exiting the loop after server hop
+            end)
+
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y + 5, balloonLandPos.Z)
+            LocalPlayer.Character.HumanoidRootPart.Anchored = false
+
+            print("Waiting for balloon drop")
+            local counter = 0
+
+            local exiting = false
+            while not foundBreaks do
+                counter = counter + 1
+                if counter > (getgenv().autoBalloonConfig.GIFT_BOX_BREAK_FAILSAFE * 20) then
+                    print("Balloon drop not found")
+                    exiting = true
+                    break
+                end
+                task.wait(0.05)
             end
 
+            loadBreaks:Disconnect()
+
+            if not exiting then
+                for _, v in pairs(balloonGifts) do
+                    local brokeBox = false
+                    task.spawn(function()
+                        while breakables:FindFirstChild(v.Name) do
+                            game:GetService("ReplicatedStorage").Network.Breakables_PlayerDealDamage:FireServer(v.Name)
+                            task.wait()
+                        end
+                        brokeBox = true
+                    end)
+
+                    local counter = 0
+                    while not brokeBox and counter < (getgenv().autoBalloonConfig.GIFT_BOX_BREAK_FAILSAFE * 20) do
+                        counter = counter + 1
+                        task.wait(0.05)
+                    end
+
+                    print("Broke balloon box")
+                end
+                LocalPlayer.Character.HumanoidRootPart.Anchored = true
+            end
+
+            print("Popped balloon")
             task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
         end
 
-        -- Server hop if required
         if getgenv().autoBalloonConfig.SERVER_HOP then
             local timeElapsed = os.time() - startTimestamp
-            if timeElapsed >= getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
-            else
+            if timeElapsed < getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
                 task.wait(getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME - timeElapsed)
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
             end
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
         end
 
-        -- Reset position after actions
         LocalPlayer.Character.HumanoidRootPart.Anchored = false
         LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
     end
 
-    -- Server hop if required after a certain time
-    if (os.time() - startTimestamp) >= getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
     end
 end
