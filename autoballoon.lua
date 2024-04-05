@@ -225,7 +225,7 @@ while getgenv().autoBalloon do
                     exiting = true
                     break
                 end
-                task.wait(0.05)
+                task.wait(0.1)
             end
 
             loadBreaks:Disconnect()
@@ -244,7 +244,7 @@ while getgenv().autoBalloon do
                     local counter = 0
                     while not brokeBox and counter < (getgenv().autoBalloonConfig.GIFT_BOX_BREAK_FAILSAFE * 20) do
                         counter = counter + 1
-                        task.wait(0.05)
+                        task.wait(0.1)
                     end
 
                     print("Broke balloon box")
