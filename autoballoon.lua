@@ -6,7 +6,7 @@ getgenv().autoBalloon = true
 
 getgenv().autoBalloonConfig = {
     SERVER_HOP_AFTER_NOT_FIND = false, -- if the balloon isn't found, instead of checking through the rest of the balloons, it will just server hop
-    SERVER_MINIMUM_TIME = 50, -- minimum time to wait before server hopping
+    SERVER_MINIMUM_TIME = 30, -- minimum time to wait before server hopping
     START_DELAY = 1, -- delay before starting
     SERVER_HOP_DELAY = 0, -- delay before server hopping
     BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
@@ -227,10 +227,13 @@ while getgenv().autoBalloon do
                 end
                 task.wait(0.05)
             end
-
- 
+           
+           
+            
 
             if not exiting then
+                loadBreaks:Disconnect()
+                task.wait()
                 for _, v in pairs(balloonGifts) do
                     local brokeBox = false
                     task.spawn(function()
@@ -272,4 +275,5 @@ while getgenv().autoBalloon do
         loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhopv1.lua"))()
     end
 end
+
 
