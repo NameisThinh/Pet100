@@ -144,7 +144,7 @@ local function IsWithinDistance(object, maxDistance)
     return false
 end
 
-MaxDistance = 5
+MaxDistance = 1
 spawn(function()
     while true do
         local breakables = Workspace.__THINGS.Breakables:GetChildren()
