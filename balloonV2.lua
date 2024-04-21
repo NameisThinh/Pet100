@@ -222,6 +222,11 @@ while getgenv().autoBalloon do
         ReplicatedStorage.Network.BalloonGifts_BalloonHit:FireServer(unpack(args))
         ReplicatedStorage.Network.Slingshot_Unequip:InvokeServer()
  
+
+        task.wait(0.5)
+        local balloonLandPos = balloonData.LandPosition
+          LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y +5, balloonLandPos.Z)
+          LocalPlayer.Character.HumanoidRootPart.Anchored = false
     end
 
     for balloonId, balloonData in pairs(balloonIds) do
