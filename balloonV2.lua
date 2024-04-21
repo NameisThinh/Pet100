@@ -3,15 +3,92 @@
 getgenv().autoBalloon = true
 
 getgenv().autoBalloonConfig = {
-    START_DELAY = 1, -- delay before starting
+    START_DELAY = 1.5, -- delay before starting
     SERVER_HOP = true, -- server hop after popping balloons
-    SERVER_HOP_DELAY = 0, -- delay before server hopping
-    BALLOON_DELAY = 0.5, -- delay before popping next balloon (if there are multiple balloons in the server)
     GET_BALLOON_DELAY = 1, -- delay before getting balloons again if none are detected
-    WAIT_FOR_BREAK = 3 -- delay in seconds to wait for the gift to break
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
+
+
+
+local Workspace = game:GetService("Workspace")
+local Terrain = Workspace:WaitForChild("Terrain")
+Terrain.WaterReflectance = 0
+Terrain.WaterTransparency = 1
+Terrain.WaterWaveSize = 0
+Terrain.WaterWaveSpeed = 0
+
+local Lighting = game:GetService("Lighting")
+Lighting.Brightness = 0
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e100
+Lighting.FogStart = 0
+sethiddenproperty(Lighting, "Technology", 2)
+
+sethiddenproperty(Terrain, "Decoration", false)
+
+game:GetService("Lighting"):ClearAllChildren()
+local function clearTextures(v)
+    if v:IsA("BasePart") and not v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif (v:IsA("Decal") or v:IsA("Texture")) then
+        v.Transparency = 1
+        v:Destroy()
+    elseif v.Name == "Foilage" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Foil" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Wood" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Sky" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "grass" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "ice" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "glass" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Tree" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Bush" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Water" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "Brick" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "cobblestone" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v.Name == "woodplanks" and v:IsA("Folder") then
+        v:Destroy()
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+        v.Enabled = false
+    elseif v:IsA("SpecialMesh")  then
+        v.TextureId = 0
+      elseif v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+        v.TextureID = 10385902758728957
+    elseif v:IsA("ShirtGraphic") then
+      v.Graphic = 1
+    elseif (v:IsA("Shirt") or v:IsA("Pants")) then
+      v[v.ClassName .. "Template"] = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    end
+end
+for _, v in pairs(Workspace:GetDescendants()) do
+    clearTextures(v)
+end
+
+Workspace.DescendantAdded:Connect(function(v)
+    clearTextures(v)
+end)
+
 
 for _, lootbag in pairs(game:GetService("Workspace").__THINGS:FindFirstChild("Lootbags"):GetChildren()) do
     if lootbag then
@@ -37,6 +114,7 @@ game:GetService("Workspace").__THINGS:FindFirstChild("Orbs").ChildAdded:Connect(
     end
 end)
 
+-- local startTimestamp = os.time()
 print("boga boga")
 task.wait(getgenv().autoBalloonConfig.START_DELAY)
 
@@ -64,7 +142,7 @@ local function IsWithinDistance(object, maxDistance)
     return false
 end
 
-MaxDistance = 1
+MaxDistance = 5
 spawn(function()
     while true do
         local breakables = Workspace.__THINGS.Breakables:GetChildren()
@@ -93,11 +171,14 @@ while getgenv().autoBalloon do
 
     local allPopped = true
     for i, v in pairs(getActiveBalloons) do
+    
         if not v.Popped then
             allPopped = false
             print("Unpopped balloon found")
             balloonIds[i] = v
+              
         end
+
     end
 
     if allPopped then
@@ -110,9 +191,7 @@ while getgenv().autoBalloon do
         continue
     end
 
-    if not getgenv().autoBalloon then
-        break
-    end
+
 
     local originalPosition = LocalPlayer.Character.HumanoidRootPart.CFrame
 
@@ -128,43 +207,31 @@ while getgenv().autoBalloon do
         task.wait()
 
         LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonPosition.X, balloonPosition.Y + 30, balloonPosition.Z)
-
-        task.wait()
-
+  
         local args = {
             [1] = Vector3.new(balloonPosition.X, balloonPosition.Y + 25, balloonPosition.Z),
             [2] = 0.5794160315249014,
             [3] = -0.8331117721691044,
             [4] = 200
         }
-
-        ReplicatedStorage.Network.Slingshot_FireProjectile:InvokeServer(Vector3.new(balloonPosition.X, balloonPosition.Y + 25, balloonPosition.Z), 0.5794160315249014, -0.8331117721691044, 200)
-
-        task.wait(0.1)
+        ReplicatedStorage.Network.Slingshot_FireProjectile:InvokeServer(unpack(args))
 
         local args = {
             [1] = balloonId
         }
-
         ReplicatedStorage.Network.BalloonGifts_BalloonHit:FireServer(unpack(args))
-
-        LocalPlayer.Character.HumanoidRootPart.Anchored = false
-
-        task.wait(getgenv().autoBalloonConfig.WAIT_FOR_BREAK)
-
         ReplicatedStorage.Network.Slingshot_Unequip:InvokeServer()
-
-        print("Popped balloon, waiting " .. tostring(getgenv().autoBalloonConfig.BALLOON_DELAY) .. " seconds")
-        task.wait(getgenv().autoBalloonConfig.BALLOON_DELAY)
+ 
     end
 
-    if getgenv().autoBalloonConfig.SERVER_HOP then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
-  
+    for balloonId, balloonData in pairs(balloonIds) do
+
+      local balloonLandPos = balloonData.LandPosition
+          LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y +5, balloonLandPos.Z)
+          LocalPlayer.Character.HumanoidRootPart.Anchored = false
+          task.wait(1.5)
     end
 
-    LocalPlayer.Character.HumanoidRootPart.Anchored = false
-    LocalPlayer.Character.HumanoidRootPart.CFrame = originalPosition
 end
 
 

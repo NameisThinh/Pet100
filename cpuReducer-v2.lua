@@ -97,7 +97,7 @@ pcall(function()
 end)
 pcall(function() 
     for k,v in game:GetDescendants() do 
-        if v:IsA("RemoteEvent") then 
+        if v:IsA("RemoteEvent") then wdd
             pcall(function() 
                 for k,v in getconnections(v.OnClientEvent) do 
                     if getfenv(v.Function).script ~= script then v:Disable() end
