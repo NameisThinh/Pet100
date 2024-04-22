@@ -6,6 +6,7 @@ getgenv().autoBalloonConfig = {
     START_DELAY = 1.5, -- delay before starting
     SERVER_HOP = true, -- server hop after popping balloons
     GET_BALLOON_DELAY = 1, -- delay before getting balloons again if none are detected
+    SERVER_MINIMUM_TIME=20,
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/waitForGameLoad.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fdvll/pet-simulator-99/main/antiStaff.lua"))()
@@ -114,7 +115,7 @@ game:GetService("Workspace").__THINGS:FindFirstChild("Orbs").ChildAdded:Connect(
     end
 end)
 
--- local startTimestamp = os.time()
+local startTimestamp = os.time()
 print("boga boga")
 task.wait(getgenv().autoBalloonConfig.START_DELAY)
 
@@ -229,9 +230,12 @@ while getgenv().autoBalloon do
       local balloonLandPos = balloonData.LandPosition
           LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y +5, balloonLandPos.Z)
           LocalPlayer.Character.HumanoidRootPart.Anchored = false
-          task.wait(1.75)
+          task.wait(1.7)
     end
 
+    if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/nameisthinh/Pet100/thinh/serverhop.lua"))()
+    end
 end
 
 
