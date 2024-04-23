@@ -230,7 +230,7 @@ while getgenv().autoBalloon do
       local balloonLandPos = balloonData.LandPosition
           LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(balloonLandPos.X, balloonLandPos.Y +5, balloonLandPos.Z)
           LocalPlayer.Character.HumanoidRootPart.Anchored = false
-          task.wait(1.7)
+          task.wait(2.5)
     end
 
     if (os.time() - startTimestamp) > getgenv().autoBalloonConfig.SERVER_MINIMUM_TIME then
